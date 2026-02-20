@@ -46,14 +46,14 @@ fn normalisation_correct() {
 
     let mut nfa = crate::NFA::new();
 
+    nfa.add_regex(&Default::default(), &Regex::Char('\u{E000}'), None, 1);
+    nfa.add_regex(&Default::default(), &Regex::Char('\u{D7FF}'), None, 2);
     nfa.add_regex(
         &Default::default(),
         &Regex::CharSet(CharSet(vec![CharOrRange::Range('\u{D7DD}', '\u{E000}')])),
         None,
-        1,
+        3,
     );
-    nfa.add_regex(&Default::default(), &Regex::Char('\u{E000}'), None, 2);
-    nfa.add_regex(&Default::default(), &Regex::Char('\u{D7FF}'), None, 3);
 
     let mut dfa = crate::nfa_to_dfa(&nfa);
 
