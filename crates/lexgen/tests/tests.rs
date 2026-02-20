@@ -1289,3 +1289,19 @@ fn visibility() {
         'a' = 1,
     }
 }
+
+#[test]
+fn normalisation_sound() {
+    lexer! {
+        pub(crate) Lexer -> usize;
+
+        '\u{E000}' = 1,
+        '\u{D7FF}' = 2,
+        ['\u{D7DD}'-'\u{E000}'] = 3,
+    }
+
+    let mut lexer = Lexer::new("\u{E000}\u{D7FF}\u{D7DF}");
+    assert_eq!(next(&mut lexer), Some(Ok(1)));
+    assert_eq!(next(&mut lexer), Some(Ok(2)));
+    assert_eq!(next(&mut lexer), Some(Ok(3)));
+}

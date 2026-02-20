@@ -59,12 +59,12 @@ impl<A> RangeMap<A> {
         self.ranges.iter()
     }
 
-    pub fn iter_mut(&mut self) -> impl Iterator<Item = &mut Range<A>> {
-        self.ranges.iter_mut()
-    }
-
     pub fn into_iter(self) -> impl Iterator<Item = Range<A>> {
         self.ranges.into_iter()
+    }
+
+    pub fn retain_mut<F: FnMut(&mut Range<A>) -> bool>(&mut self, f: F) {
+        self.ranges.retain_mut(f);
     }
 
     pub fn is_empty(&self) -> bool {
